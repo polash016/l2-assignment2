@@ -33,7 +33,7 @@ const updateSingleUser = async (id: number, data: TUser) => {
     throw new Error("User Doesn't exists");
   }
   const query = { userId: id };
-  const result = await User.updateOne(query, data);
+  const result = await User.updateOne(query, data, { new: true });
   return result;
 };
 

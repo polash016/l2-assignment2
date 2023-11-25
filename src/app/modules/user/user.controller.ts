@@ -15,10 +15,10 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User Created Successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
@@ -32,10 +32,10 @@ const getUsers = async (req: Request, res: Response) => {
       message: 'Users retrieved Successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
@@ -49,10 +49,10 @@ const findUser = async (req: Request, res: Response) => {
       message: 'Users fetched Successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'No User Found',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
@@ -68,10 +68,10 @@ const updateUser = async (req: Request, res: Response) => {
       message: 'User Updated Successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'No User Found',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
@@ -86,10 +86,10 @@ const deleteUser = async (req: Request, res: Response) => {
       message: 'Users Deleted Successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'User Not Found',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
@@ -105,10 +105,10 @@ const updateSingleOrder = async (req: Request, res: Response) => {
       message: 'User Updated Successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'No User Found',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
@@ -134,10 +134,10 @@ const getOrderById = async (req: Request, res: Response) => {
       message: 'Got Order By Id Successfully',
       data: result?.orders,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
@@ -158,10 +158,10 @@ const totalOrderPrice = async (req: Request, res: Response) => {
       message: 'Total Price Calculated Successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: err.message || 'Something went wrong',
       error: err,
     });
   }
