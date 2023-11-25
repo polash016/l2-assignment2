@@ -89,7 +89,7 @@ const deleteUser = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: 'User Not Found',
       error: err,
     });
   }

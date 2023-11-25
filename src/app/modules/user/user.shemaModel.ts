@@ -56,7 +56,7 @@ const fullNameSchema = new Schema<TFullName>({
   },
 });
 
-const userSchema = new Schema<TUser>(
+const userSchema = new Schema<TUser, UserModel>(
   {
     userId: {
       type: Number,
