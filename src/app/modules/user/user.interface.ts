@@ -28,7 +28,7 @@ export type TUser = {
   hobbies: Array<string>;
   address: TAddress;
   orders?: Array<TOrder>;
-  isDeleted: false;
+  isDeleted: boolean;
 };
 
 export interface UserModel extends Model<TUser> {

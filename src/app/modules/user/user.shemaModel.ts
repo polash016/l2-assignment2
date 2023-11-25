@@ -56,47 +56,56 @@ const fullNameSchema = new Schema<TFullName>({
   },
 });
 
-const userSchema = new Schema<TUser>({
-  userId: {
-    type: Number,
-    required: [true, 'User ID is required'],
-    unique: true,
+const userSchema = new Schema<TUser>(
+  {
+    userId: {
+      type: Number,
+      required: [true, 'User ID is required'],
+      unique: true,
+    },
+    username: {
+      type: String,
+      required: [true, 'Username is required'],
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      select: false,
+    },
+    fullName: fullNameSchema,
+    age: {
+      type: Number,
+      required: [true, 'Age is required'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      trim: true,
+    },
+    isActive: {
+      type: Boolean,
+      required: [true, 'isActive is required'],
+    },
+    hobbies: {
+      type: [String],
+      required: [true, 'Hobbies are required'],
+    },
+    address: addressSchema,
+    orders: [orderSchema],
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
-  username: {
-    type: String,
-    required: [true, 'Username is required'],
-    trim: true,
+  {
+    toJSON: {
+      transform: function (doc, ret) {
+        delete ret.password;
+      },
+    },
   },
-  password: {
-    type: String,
-    required: [true, 'Password is required'],
-    select: false,
-  },
-  fullName: fullNameSchema,
-  age: {
-    type: Number,
-    required: [true, 'Age is required'],
-  },
-  email: {
-    type: String,
-    required: [true, 'Email is required'],
-    trim: true,
-  },
-  isActive: {
-    type: Boolean,
-    required: [true, 'isActive is required'],
-  },
-  hobbies: {
-    type: [String],
-    required: [true, 'Hobbies are required'],
-  },
-  address: addressSchema,
-  orders: [orderSchema],
-  isDeleted: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 
 userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(
