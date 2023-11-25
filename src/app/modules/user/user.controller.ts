@@ -95,7 +95,7 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-const updateOrders = async (req: Request, res: Response) => {
+const updateSingleOrder = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
     const product = req.body;
@@ -113,10 +113,46 @@ const updateOrders = async (req: Request, res: Response) => {
     });
   }
 };
+
+const getOrderById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const result = await UserServices.getOrder(Number(id));
+    if (!result) {
+      res.status(500).json({
+        success: false,
+        message: 'User Not Found',
+      });
+    } else if (!result.orders || result?.orders.length === 0) {
+      res.status(500).json({
+        success: false,
+        message: "User Didn't Ordered",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: 'Got Order By Id Successfully',
+      data: result?.orders,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: err,
+    });
+  }
+};
+
 const totalOrderPrice = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
     const result = await UserServices.totalPrice(Number(id));
+    if (!result) {
+      res.status(500).json({
+        success: false,
+        message: 'User Not Found',
+      });
+    }
     res.status(200).json({
       success: true,
       message: 'Total Price Calculated Successfully',
@@ -125,7 +161,7 @@ const totalOrderPrice = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'User Not Found',
+      message: 'Something went wrong',
       error: err,
     });
   }
@@ -137,6 +173,7 @@ export const UserController = {
   findUser,
   deleteUser,
   updateUser,
-  updateOrders,
+  updateSingleOrder,
+  getOrderById,
   totalOrderPrice,
 };
