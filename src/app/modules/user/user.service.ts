@@ -33,6 +33,15 @@ const updateOrders = async (id: number, data: TUser) => {
   });
   return result;
 };
+const totalPrice = async (id: number) => {
+  const query = { userId: id };
+  const user = await User.findOne(query);
+  const totalOrderPrice = user?.orders?.reduce((total, order) => {
+    const orderPrice = order.price * order.quantity;
+    return total + orderPrice;
+  }, 0);
+  return totalOrderPrice;
+};
 
 export const UserServices = {
   createUserIntoDB,
@@ -41,4 +50,5 @@ export const UserServices = {
   updateSingleUser,
   deleteUserFromDB,
   updateOrders,
+  totalPrice,
 };

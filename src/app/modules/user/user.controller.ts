@@ -113,6 +113,23 @@ const updateOrders = async (req: Request, res: Response) => {
     });
   }
 };
+const totalOrderPrice = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const result = await UserServices.totalPrice(Number(id));
+    res.status(200).json({
+      success: true,
+      message: 'Total Price Calculated Successfully',
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'User Not Found',
+      error: err,
+    });
+  }
+};
 
 export const UserController = {
   createUser,
@@ -121,4 +138,5 @@ export const UserController = {
   deleteUser,
   updateUser,
   updateOrders,
+  totalOrderPrice,
 };
