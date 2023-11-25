@@ -1,5 +1,13 @@
 import { Schema, model } from 'mongoose';
-import { TAddress, TFullName, TOrder, TUser } from './user.interface';
+import {
+  TAddress,
+  TFullName,
+  TOrder,
+  TUser,
+  UserModel,
+} from './user.interface';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
 const orderSchema = new Schema<TOrder>({
   productName: {
@@ -84,6 +92,35 @@ const userSchema = new Schema<TUser>({
   },
   address: addressSchema,
   orders: [orderSchema],
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-export const UserModel = model<TUser>('User', userSchema);
+userSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+// query middleware
+
+userSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+userSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+userSchema.statics.isUserExists = async function (id: number) {
+  const existingUser = User.findOne({ userId: id });
+  return existingUser;
+};
+
+export const User = model<TUser, UserModel>('User', userSchema);
