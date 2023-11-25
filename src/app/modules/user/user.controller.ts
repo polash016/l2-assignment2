@@ -95,10 +95,30 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+const updateOrders = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const product = req.body;
+    const result = await UserServices.updateOrders(Number(id), product);
+    res.status(200).json({
+      success: true,
+      message: 'User Updated Successfully',
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: 'No User Found',
+      error: err,
+    });
+  }
+};
+
 export const UserController = {
   createUser,
   getUsers,
   findUser,
   deleteUser,
   updateUser,
+  updateOrders,
 };

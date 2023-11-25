@@ -26,10 +26,19 @@ const deleteUserFromDB = async (id: number) => {
   return result;
 };
 
+const updateOrders = async (id: number, data: TUser) => {
+  const query = { userId: id };
+  const result = await User.findOneAndUpdate(query, {
+    $push: { orders: data },
+  });
+  return result;
+};
+
 export const UserServices = {
   createUserIntoDB,
   getAllUsers,
   findSingleUser,
   updateSingleUser,
   deleteUserFromDB,
+  updateOrders,
 };
